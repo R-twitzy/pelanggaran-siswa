@@ -6,8 +6,10 @@ app.use(express.json())
 // call pelanggaranController
 let pelanggaranController = require("../controllers/pelanggaranController")
 
+let authorization = require("../middlewares/authorization")
+
 // endpoint get data pelanggaran
-app.get("/", pelanggaranController.getDatapelanggaran)
+app.get("/", authorization.authorization, pelanggaranController.getDatapelanggaran)
 
 // endpoint add data pelanggaran
 app.post("/", pelanggaranController.addDatapelanggaran)

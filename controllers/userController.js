@@ -1,5 +1,6 @@
 // memanggil library md5
 const md5 = require("md5")
+let jwt = require(`jsonwebtoken`)
 
 // memanggil file model untuk user
 let modeluser = require("../models/index").user
@@ -7,7 +8,10 @@ let modeluser = require("../models/index").user
 exports.getDatauser = (request, response) => {
     modeluser.findAll()
     .then(result => {
-        return response.json(result)
+        return response.json({
+            Count : result.length,
+            User: result
+        })
     })
     .catch(error => {
         return response.json({
@@ -73,3 +77,35 @@ exports.deleteDatauser = (request, response) => {
             })
         })
     }
+
+exports.authentication = async(request, response) => {
+        let data = {
+            username: request.body.username,
+            password: md5(request.body.password)
+        }
+
+        // validasi (cek data di tabel user)
+        let result = await modeluser.findOne({where: data})
+
+        if (result) {
+            // data ditemukan
+
+            // payload adalah data/informasi yg akan dienkripsi
+            let payload = JSON.stringify(result) // konversi dari bentuk objek ke bentuk json
+            let secretKey = `Sequelize itu sangat menyenangkan`
+
+            // generate token
+            let token = jwt.sign(payload, secretKey)
+            return response.json({
+                logged: true,
+                token: token
+            })
+
+        } else{
+            // data tidak ditemukan
+            return response.json({
+                logged: false,
+                message: `invalid username or password`
+            })
+        }
+}

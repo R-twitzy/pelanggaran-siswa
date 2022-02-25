@@ -18,4 +18,6 @@ app.put("/:id_user", userController.editDatauser)
 // endpoint delete user
 app.delete("/:id_user", userController.deleteDatauser)
 
+app.post("/auth", userController.authentication)
+
 module.exports = app

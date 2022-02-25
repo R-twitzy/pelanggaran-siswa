@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.2",
+    "jsonwebtoken": "^8.5.1",
     "md5": "^2.3.0",
     "mysql2": "^2.3.3",
     "sequelize": "^6.16.1"

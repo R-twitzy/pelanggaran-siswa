@@ -5,7 +5,9 @@ app.use(express.json())
 
 let pelanggaranSiswaController = require(`../controllers/pelanggaranSiswaController`)
 
-app.get("/", pelanggaranSiswaController.getData)
+let authorization = require("../middlewares/authorization")
+
+app.get("/", authorization.authorization, pelanggaranSiswaController.getData)
 app.post("/", pelanggaranSiswaController.addData)
 app.put("/:id_pelanggaran_siswa", pelanggaranSiswaController.updateData)
 app.delete("/:id_pelanggaran_siswa", pelanggaranSiswaController.deleteData)
