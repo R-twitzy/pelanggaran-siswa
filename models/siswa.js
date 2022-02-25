@@ -29,7 +29,8 @@ module.exports = (sequelize, DataTypes) => {
     nis: DataTypes.STRING,
     nama: DataTypes.STRING,
     kelas: DataTypes.STRING,
-    poin: DataTypes.INTEGER
+    poin: DataTypes.INTEGER,
+    image: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'siswa',
