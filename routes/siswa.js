@@ -27,9 +27,16 @@ app.post("/", [
     siswaController.addDataSiswa)
 
 // endpoint edit siswa
-app.put("/:id_siswa", siswaController.editDataSiswa)
+app.put("/:id_siswa", [
+    uploadImage.upload.single(`image`),
+    authorization.authorization
+], 
+    siswaController.editDataSiswa)
 
 // endpoint delete siswa
-app.delete("/:id_siswa", siswaController.deleteDataSiswa)
+app.delete("/:id_siswa", [
+    authorization.authorization
+], 
+    siswaController.deleteDataSiswa)
 
 module.exports = app

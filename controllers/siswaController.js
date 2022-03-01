@@ -44,13 +44,26 @@ exports.addDataSiswa = (request, response) => {
         })
     }
 
-exports.editDataSiswa = (request, response) => {
+exports.editDataSiswa = async (request, response) => {
     let id = request.params.id_siswa
     let dataSiswa = {
         nama: request.body.nama,
         kelas: request.body.kelas,
         poin: request.body.poin,
         nis: request.body.nis,
+    }
+
+    if(request.file){
+        // jika edit menyertakan gambar
+        let siswa = await modelSiswa.findOne({ where: { id_siswa: id} })
+        let oldFileName = siswa.image  
+
+        // dellete file
+        let location = path.join(__dirname, "../image", oldFileName)
+        fs.unlink(location, error => console.log(error))
+
+        // menyisipkan nama file baru ke dalam objek data siswa
+        dataSiswa.image = request.file.filename
     }
     
     modelSiswa.update(dataSiswa, {where: {id_siswa: id}})
