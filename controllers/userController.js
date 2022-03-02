@@ -2,6 +2,8 @@
 const md5 = require("md5")
 let jwt = require(`jsonwebtoken`)
 
+const { validationResult } = require("express-validator")
+
 // memanggil file model untuk user
 let modeluser = require("../models/index").user
 
@@ -21,6 +23,10 @@ exports.getDatauser = (request, response) => {
 }
 
 exports.addDatauser = (request, response) => {
+    let error = validationResult(request)
+    if (!error.isEmpty()) {
+        return response.json(error.array())
+    }
     // tampung data request
     let newuser = {
         nama_user: request.body.nama_user,
