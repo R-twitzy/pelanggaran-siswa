@@ -7,7 +7,10 @@ let fs = require("fs")
 exports.getDataSiswa = (request, response) => {
     modelSiswa.findAll()
     .then(result => {
-        return response.json(result)
+        return response.json({
+            Count : result.length,
+            Siswa : result
+        })
     })
     .catch(error => {
         return response.json({

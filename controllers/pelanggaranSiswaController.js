@@ -1,7 +1,9 @@
+const detail_pelanggaran_siswa = require("../models/detail_pelanggaran_siswa")
+
 let pelanggaranSiswaModel = require("../models/index").pelanggaran_siswa
 let detailPelanggaranSiswaModel = require("../models/index").detail_pelanggaran_siswa
 let siswaModel = require("../models/index").siswa
-let pelanggaranModel = require("../models/pelanggaran").siswa
+let pelanggaranModel = require("../models/index").pelanggaran
 
 exports.getData = async (request, response) => {
     let data = await pelanggaranSiswaModel.findAll({
@@ -21,15 +23,16 @@ exports.addData = async (request, response) => {
     let siswa = await siswaModel.findOne ({
         where: {id_siswa: request.body.id_siswa}
     })
-    let poinSiswa = siswa.poinSiswa
-
+    let poinSiswa = siswa.poin
+    
     // 2 mengambil nilai poin dari tiap pelanggaran
     let detail = request.body.detail_pelanggaran_siswa
+    jumlahpoinPelanggaran = 0
     for (let i = 0; i < detail.length; i++) {
         // ambil poin dari tiap pelanggaran
         let pelanggaran = await pelanggaranModel.findOne({
-            where: {id_pelanggaran: detail[i].id_pelanggaran}
-        })
+            where : {id_pelanggaran: detail[i].id_pelanggaran}
+          })
         let poinPelanggaran = pelanggaran.poin
         jumlahpoinPelanggaran += poinPelanggaran
     }
