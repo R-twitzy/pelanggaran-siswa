@@ -13,6 +13,9 @@ const authorization = require("../middlewares/authorization")
 // endpoint get data user
 app.get("/", authorization.authorization,userController.getDatauser)
 
+// endpoint find user
+app.post("/find", authorization.authorization, userController.findUser)
+
 // endpoint add data user
 app.post("/", [
     userValidator.validate,

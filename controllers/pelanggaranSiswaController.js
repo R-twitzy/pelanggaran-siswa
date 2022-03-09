@@ -13,7 +13,56 @@ exports.getData = async (request, response) => {
             include: ["pelanggaran"]
         }]
     })
-    return response.json(data)
+    return response.json({
+        Count : data.length,
+        hasil: data
+    })
+}
+
+exports.filterPelanggaran = async (request, response) => {
+    // filter tgl awal dan tgl akhhir
+    let start = request.body.start
+    let end = request.body.end
+
+    /** query= select * from pelanggaran_siswa where waktu between start and end */
+    
+    // import sequelize operator
+    let sequelize = require(`sequelize`)
+    let Op = sequelize.Op
+
+    let data = await pelanggaranSiswaModel.findAll({
+        include: ["siswa", "user", {
+            model: detailPelanggaranSiswaModel,
+            as: "detail_pelanggaran_siswa",
+            include: ["pelanggaran"]
+        }],
+        where: {
+            waktu: {[Op.between]: [start, end]}
+        }
+    })
+    return response.json({
+        Count : data.length,
+        hasil: data
+    })
+}
+
+exports.findPelanggaranSiswa = async (request, response) => {
+    let id = request.params.id_siswa
+
+    let data = await pelanggaranSiswaModel.findAll({
+        include: ["siswa", "user", {
+            model: detailPelanggaranSiswaModel,
+            as: "detail_pelanggaran_siswa",
+            include: ["pelanggaran"]
+        }],
+        where: {
+            id_siswa: id
+        }
+    })
+    return response.json({
+        Count : data.length,
+        hasil: data
+    })
 }
 
 exports.addData = async (request, response) => {

@@ -22,6 +22,24 @@ exports.getDatauser = (request, response) => {
     })
 }
 
+exports.findUser = async (request, response) => {
+    let keyword = request.body.keyword
+
+    // import sequelize operator
+    let sequelize = require(`sequelize`)
+    let Op = sequelize.Op
+
+    let datauser = await modeluser.findAll({
+        where: {
+            [Op.or]:{
+                username: {[Op.like]: `%${keyword}%`},
+                nama_user: {[Op.like]: `%${keyword}%`}
+            }
+        }
+    })
+    return response.json(datauser)
+}
+
 exports.addDatauser = (request, response) => {
     let error = validationResult(request)
     if (!error.isEmpty()) {
