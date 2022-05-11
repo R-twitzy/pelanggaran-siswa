@@ -48,7 +48,6 @@ exports.filterPelanggaran = async (request, response) => {
 
 exports.findPelanggaranSiswa = async (request, response) => {
     let id = request.params.id_siswa
-
     let data = await pelanggaranSiswaModel.findAll({
         include: ["siswa", "user", {
             model: detailPelanggaranSiswaModel,
